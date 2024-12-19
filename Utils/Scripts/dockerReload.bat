@@ -29,7 +29,7 @@ if ERRORLEVEL 1 (
 
 :: Run the new container
 echo Running the new container...
-docker run -p 8001:8000 -v %cd%\test.db:/app/test.db --name %CONTAINER_NAME% testapi
+docker run -p 8000:8000 -v %cd%\test.db:/app/test.db --name %CONTAINER_NAME% testapi
 if ERRORLEVEL 1 (
     echo Failed to run the new container
     exit /b 1

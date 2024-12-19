@@ -49,3 +49,26 @@ async def list_items(skip: int = 0, limit: int = 10, db: AsyncSession = Depends(
     result = await db.execute(select(ItemModel).offset(skip).limit(limit))
     items = result.scalars().all()
     return items
+
+@app.get("/docs")
+async def get_docs():
+    return {
+        "endpoints": [
+            {"path": "/", "method": "GET", "description": "Welcome message and status"},
+            {"path": "/items/", "method": "POST", "description": "Create a new item"},
+            {"path": "/items/{item_id}", "method": "GET", "description": "Retrieve an item by ID"},
+            {"path": "/docs", "method": "GET", "description": "API documentation"}
+        ]
+    }
+
+@app.get("/docs/json")
+async def get_docs_json():
+    return {
+        "endpoints": [
+            {"path": "/", "method": "GET", "description": "Welcome message and status"},
+            {"path": "/items/", "method": "POST", "description": "Create a new item"},
+            {"path": "/items/{item_id}", "method": "GET", "description": "Retrieve an item by ID"},
+            {"path": "/docs", "method": "GET", "description": "API documentation"},
+            {"path": "/docs/json", "method": "GET", "description": "API documentation in JSON format"}
+        ]
+    }

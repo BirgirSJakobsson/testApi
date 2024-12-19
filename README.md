@@ -31,30 +31,30 @@ uvicorn main:app --reload
 ```
 
 5. Access the API:
-- API endpoints: http://localhost:8001
-- Interactive documentation: http://localhost:8001/docs
-- OpenAPI specification: http://localhost:8001/openapi.json
+- API endpoints: http://localhost:8000
+- Interactive documentation: http://localhost:8000/docs
+- OpenAPI specification: http://localhost:8000/openapi.json
 
 ## API Endpoints
 
 ### Welcome Endpoint
 ```bash
-curl http://localhost:8001/
+curl http://localhost:8000/
 ```
 
 ### Create Item
 ```bash
-curl -X POST http://localhost:8001/items/ -H "Content-Type: application/json" -d '{"name": "Test Item", "description": "This is a test item", "price": 29.99, "is_available": true}'
+curl -X POST http://localhost:8000/items/ -H "Content-Type: application/json" -d '{"name": "Test Item", "description": "This is a test item", "price": 29.99, "is_available": true}'
 ```
 
 ### Get All Items
 ```bash
-curl http://localhost:8001/items/
+curl http://localhost:8000/items/
 ```
 
 ### Get Item by ID
 ```bash
-curl http://localhost:8001/items/1
+curl http://localhost:8000/items/1
 ```
 
 ## Docker Commands
@@ -62,7 +62,7 @@ curl http://localhost:8001/items/1
 ### Build and Run the Docker Container
 ```bash
 docker build -t testapi .
-docker run -p 8001:8000 -v ${PWD}/test.db:/app/test.db --name testapi-container testapi
+docker run -p 8000:8000 -v ${PWD}/test.db:/app/test.db --name testapi-container testapi
 ```
 
 ### Reload the Docker Container
