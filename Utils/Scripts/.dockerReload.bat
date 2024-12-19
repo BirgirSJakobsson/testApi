@@ -1,11 +1,14 @@
 @echo off
 setlocal
+SET APP_ENV=%1
 
 :: Set default environment if not specified
-if "%APP_ENV%"=="" set APP_ENV=development
+IF "%APP_ENV%"=="" (
+    SET APP_ENV=development
+)
 
 :: Container name based on environment
-set CONTAINER_NAME=testapi-%APP_ENV%
+set CONTAINER_NAME= testapi-%APP_ENV%
 
 :: Set port based on environment
 if "%APP_ENV%"=="development" (
@@ -25,15 +28,17 @@ docker rm %CONTAINER_NAME% 2>nul
 
 :: Build new image
 echo Building new image...
-docker build -t testapi .
+
+docker build --no-cache --target %APP_ENV% -t %CONTAINER_NAME% .
 if ERRORLEVEL 1 (
     echo Failed to build image
     exit /b 1
 )
+echo Image Built and cache cleared
 
 :: Run the new container with environment variable
 echo Running the new container...
-docker run -d -p %HOST_PORT%:8000 -v %cd%\test.db:/app/test.db -e APP_ENV=%APP_ENV% --name %CONTAINER_NAME% testapi
+docker run -d -p %HOST_PORT%:8000 -e APP_ENV=%APP_ENV% --name %CONTAINER_NAME% testapi-%APP_ENV%
 if ERRORLEVEL 1 (
     echo Failed to run the new container
     exit /b 1

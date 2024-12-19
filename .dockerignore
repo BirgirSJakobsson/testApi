@@ -20,3 +20,4 @@ venv/
 .git
 .gitignore
 test.db
+.env

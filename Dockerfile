@@ -1,32 +1,40 @@
-FROM python:3.12-slim
+# Stage 1: Base image
+FROM python:3.12 AS base
 
-# Create a non-root user
-RUN useradd -ms /bin/bash appuser
-
-# Set default environment
-ENV APP_ENV=development
-
+# Set the working directory
 WORKDIR /app
 
+# Install Python dependencies
 COPY requirements.txt .
-COPY .env.development ./
-COPY .env.testing ./
-COPY .env.production ./
-RUN apt-get update && apt-get install -y jq && apt-get install -y curl && \
-    pip install --no-cache-dir -r requirements.txt && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Stage 2: Development stage
+FROM base AS development
+ENV APP_ENV=development
 
-# Change ownership of the app directory
-RUN chown -R appuser:appuser /app
+# Copy the environment file
+COPY .env.development .env
 
-# Switch to the non-root user
-USER appuser
+# Install curl only in the development environment
+RUN apt-get update && apt-get install -y curl
 
+# Copy application code
+COPY . /app
+
+# Expose the port the app runs on
 EXPOSE 8000
 
-# Health check to ensure the app is running
-HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
+# Set the command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
+# Stage 3: Testing stage
+#FROM base AS testing
+#ENV APP_ENV=testing
+#COPY .env.testing .env
+#COPY . /app
+
+# Stage 4: Production stage
+#FROM base AS production
+#ENV APP_ENV=production
+#COPY .env.production .env
+#COPY . /app
