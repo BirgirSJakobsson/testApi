@@ -1,5 +1,5 @@
 # Stage 1: Base image
-FROM python:3.12 AS base
+FROM python:3.12-slim AS base
 
 # Set the working directory
 WORKDIR /app
@@ -20,6 +20,15 @@ RUN apt-get update && apt-get install -y curl
 
 # Copy application code
 COPY . /app
+
+# Create new User
+RUN useradd -ms /bin/bash appuser
+
+# Change ownership of the app directory
+RUN chown -R appuser:appuser /app
+
+# Switch to the new user
+USER appuser
 
 # Expose the port the app runs on
 EXPOSE 8000
