@@ -10,17 +10,27 @@ A simple REST API built with FastAPI.
 
 ## Setup
 
-1. Install dependencies:
+1. Create a virtual environment:
+```bash
+python3 -m venv venv
+```
+
+2. Activate the virtual environment:
+```bash
+source venv/bin/activate
+```
+
+3. Install dependencies:
 ```bash
    pip install -r requirements.txt
 ```
 
-2. Run the server:
+4. Run the server:
 ```bash
 uvicorn main:app --reload
 ```
 
-3. Access the API:
+5. Access the API:
 - API endpoints: http://localhost:8001
 - Interactive documentation: http://localhost:8001/docs
 - OpenAPI specification: http://localhost:8001/openapi.json
@@ -63,4 +73,4 @@ dockerReload.bat
 
 ## Notes
 - Ensure Docker is running before executing Docker commands.
-- Modify the [dockerReload.bat](cci:7://file:///c:/Users/Chirno/CascadeProjects/TestApi/venv/Scripts/dockerReload.bat:0:0-0:0) script as needed for your environment.
+- Modify the [dockerReload.bat](cci:7://file:///c:/Users/Chirno/CascadeProjects/TestApi/Utils/Scripts/dockerReload.bat:0:0-0:0) script as needed for your environment.
