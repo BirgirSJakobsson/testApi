@@ -4,6 +4,19 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from database import get_db, ItemModel, init_db
+import os
+from dotenv import load_dotenv
+
+# Determine which environment to load
+# $env:APP_ENV="development"
+# $env:APP_ENV="testing"
+# $env:APP_ENV="production"
+environment = os.getenv("APP_ENV", "development")  # Default to development
+dotenv_file = f".env.{environment}"
+load_dotenv(dotenv_file)  # Load the corresponding .env file
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 app = FastAPI(title="TestAPI", 
              description="A simple REST API built with FastAPI",
@@ -22,6 +35,7 @@ class Item(BaseModel):
 # Initialize database tables on startup
 @app.on_event("startup")
 async def on_startup():
+    print(f"Starting application in {os.getenv('APP_ENV', 'development')} environment")
     await init_db()
 
 @app.get("/")

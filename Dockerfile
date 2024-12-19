@@ -3,9 +3,15 @@ FROM python:3.12-slim
 # Create a non-root user
 RUN useradd -ms /bin/bash appuser
 
+# Set default environment
+ENV APP_ENV=development
+
 WORKDIR /app
 
 COPY requirements.txt .
+COPY .env.development ./
+COPY .env.testing ./
+COPY .env.production ./
 RUN apt-get update && apt-get install -y jq && apt-get install -y curl && \
     pip install --no-cache-dir -r requirements.txt && \
     apt-get clean && rm -rf /var/lib/apt/lists/*

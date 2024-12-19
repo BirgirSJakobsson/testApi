@@ -74,3 +74,15 @@ dockerReload.bat
 ## Notes
 - Ensure Docker is running before executing Docker commands.
 - Modify the [dockerReload.bat](cci:7://file:///c:/Users/Chirno/CascadeProjects/TestApi/Utils/Scripts/dockerReload.bat:0:0-0:0) script as needed for your environment.
+- Setting the Variable:
+   When you run your application or Docker container, you can set the APP_ENV variable in different ways:
+   In the Terminal:
+   bash
+   CopyInsert in Terminal
+   $env:APP_ENV="production"
+   This command sets the APP_ENV variable to production for the current terminal session. You can then run your application, and it will load the .env.production file.
+   In Docker: When running your Docker container, you can set the environment variable using the -e flag:
+   bash
+   CopyInsert in Terminal
+   docker run -e APP_ENV=production -p 8000:8000 myfastapiapp
+   This command sets the APP_ENV variable to production for the container, allowing it to load the appropriate configuration.
