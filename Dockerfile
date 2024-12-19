@@ -1,14 +1,21 @@
+###
 # Stage 1: Base image
+###
 FROM python:3.12-slim AS base
 
 # Set the working directory
 WORKDIR /app
 
+# Install system dependencies
+RUN apt-get update && apt-get install
+
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+###
 # Stage 2: Development stage
+###
 FROM base AS development
 ENV APP_ENV=development
 
@@ -35,6 +42,31 @@ EXPOSE 8000
 
 # Set the command to run the application
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+###
+# Stage 3: Production stage
+###
+FROM base AS production
+ENV APP_ENV=production
+COPY .env.production .env
+COPY . /app
+
+# Create new User
+RUN useradd -ms /bin/bash appuser
+
+# Change ownership of the app directory
+RUN chown -R appuser:appuser /app
+
+# Switch to the new user
+USER appuser
+
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Set the command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
 
 # Stage 3: Testing stage
 #FROM base AS testing
