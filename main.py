@@ -40,7 +40,20 @@ async def on_startup():
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to TestAPI!", "status": "online"}
+    response_data = {
+        "message": "Welcome to TestAPI!",
+        "status": "online",
+        "endpoints": [
+            {"path": "/", "method": "GET", "description": "Welcome message, status of the API, and a list of all available endpoints"},
+            {"path": "/items/", "method": "POST", "description": "Create a new item"},
+            {"path": "/items/{item_id}", "method": "GET", "description": "Retrieve an item by ID"},
+            {"path": "/items/", "method": "GET", "description": "List items with pagination"},
+            {"path": "/docs", "method": "GET", "description": "API documentation"},
+            {"path": "/docs/json", "method": "GET", "description": "API documentation in JSON format"},
+            {"path": "/items/{item_id}", "method": "DELETE", "description": "Delete an item by ID"}
+        ]
+    } 
+    return response_data
 
 @app.post("/items/", response_model=Item)
 async def create_item(item: Item, db: AsyncSession = Depends(get_db)):
