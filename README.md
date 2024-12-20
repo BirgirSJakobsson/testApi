@@ -86,3 +86,21 @@ dockerReload.bat
    CopyInsert in Terminal
    docker run -e APP_ENV=production -p 8000:8000 myfastapiapp
    This command sets the APP_ENV variable to production for the container, allowing it to load the appropriate configuration.
+
+
+
+# Create the volume for PostgreSQL
+docker volume create pg_data
+
+# Run the PostgreSQL container
+docker run -d \
+    --name postgres_container \
+    -e POSTGRES_USER=testapidev \
+    -e POSTGRES_PASSWORD=testapidevpass \
+    -e POSTGRES_DB=testapidb \
+    -v pg_data:/var/lib/postgresql/data \
+    -p 5432:5432 \
+    postgres:latest
+
+# test 
+docker run --name postgres-container -e POSTGRES_PASSWORD=pw -d -v pgdata:/var/lib/postgresql/data postgres

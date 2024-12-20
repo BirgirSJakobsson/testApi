@@ -4,6 +4,10 @@ FROM python:3.12-slim AS base
 # Set the working directory
 WORKDIR /app
 
+# Declare a volume for the SQLite database
+# TODO:Change based on your environment
+VOLUME /app
+
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
