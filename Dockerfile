@@ -20,7 +20,7 @@ ENV APP_ENV=development
 COPY .env.development .env
 
 # Install curl only in the development environment
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl sqlite3
 
 # Copy application code
 COPY . /app
